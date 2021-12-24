@@ -46,7 +46,7 @@ void PageFrameAllocator::InitBitmap(size_t bitmapSize, void* bufferAddress) {
     }
     
 }
-a
+
 void PageFrameAllocator::FreePage(void* address) {
     uint64_t index = (uint64_t)address / 4096;
     if (PageBitmap[index] == false) return;

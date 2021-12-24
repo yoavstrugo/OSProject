@@ -1,13 +1,13 @@
 #include "BasicRenderer.h"
 #include "cstr.h"
-#include "efimem.h"
+#include "efiMemory.h"
 #include "memory.h"
 #include "Bitmap.h"
 
 struct BootInfo {
 	FrameBuffer* framebuffer;
 	PSF1_FONT* PSF1_Font;	
-	void* mMap;
+	EFI_MEMORY_DESCRIPTOR* mMap;
 	uint64_t mMapSize;
 	uint64_t mMapDescSize;
 };

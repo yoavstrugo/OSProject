@@ -1,5 +1,5 @@
 #pragma once
-#include "efimem.h"
+#include "efiMemory.h"
 #include <stdint.h>
 #include "Bitmap.h"
 #include "memory.h"
