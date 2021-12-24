@@ -1,27 +1,36 @@
 #include "cstr.h"
 
+// TODO: change the toString functions to be more 'moudlar' and 'smartly handeled'
+
 char uintToStringOut[128]; // buffer for the string
 const char* toString(uint64_t value) {
-    // The actual size of the string
+    // Calculate the size of the string
     uint8_t size;
-    uint64_t sizeTest = value;
-    while (sizeTest / 10 > 0) {
-        sizeTest /= 10;
-        size++;
+    {
+        uint64_t sizeTest = value;
+        while (sizeTest / 10 > 0) {
+            sizeTest /= 10;
+            size++;
+        }
     }
 
+    // build the string
     uint8_t index = 0;
     while (value / 10 > 0) {
-        uint8_t rem = value % 10;
-        value /= 10;
+        uint8_t rem = value % 10; // get the digit
+        value /= 10; // remove the digit from the number
 
-        uintToStringOut[size - index] = rem + '0';
+        uintToStringOut[size - index] = rem + '0';  // put the digit in the correct place,
+                                                    // it starts from the end (the ascii for 
+                                                    // number starts at '0')
         index++;
     }
 
+    // Last digit
     uint8_t rem = value % 10;
     uintToStringOut[size - index] = rem + '0';
-    uintToStringOut[size + 1] = 0;
+
+    uintToStringOut[size + 1] = 0; // terminate string
 
     return uintToStringOut;
 }
@@ -30,18 +39,21 @@ char intToStringOut[128]; // buffer for the string
 const char* toString(int64_t value) {
     uint8_t isNeg = 0;
 
+    // First check if the number is negative
     if (value < 0) {
         isNeg = 1;
         value *= -1;
         intToStringOut[0] = '-';
     }
 
-    // The actual size of the string
+    // Calculate the size of the string
     uint8_t size;
-    uint64_t sizeTest = value;
-    while (sizeTest / 10 > 0) {
-        sizeTest /= 10;
-        size++;
+    {
+        uint64_t sizeTest = value;
+        while (sizeTest / 10 > 0) {
+            sizeTest /= 10;
+            size++;
+        }
     }
 
     uint8_t index = 0;
@@ -52,7 +64,21 @@ const char* toString(int64_t value) {
         intToStringOut[size - index + isNeg] = rem + '0';
         index++;
     }
+    // build the string
+    uint8_t index = 0;
+    while (value / 10 > 0) {
+        uint8_t rem = value % 10; // get the digit
+        value /= 10; // remove the digit from the number
 
+        uintToStringOut[size - index + isNeg] = rem + '0';  // put the digit in the correct place,
+                                                            // it starts from the end (the ascii for 
+                                                            // number starts at '0'). If the number is
+                                                            // negative, we start add 1 to the index.
+        index++;
+    }
+
+
+    // Last char and terminate the string
     uint8_t rem = value % 10;
     intToStringOut[size - index + isNeg] = rem + '0';
     intToStringOut[size + 1 + isNeg] = 0;
@@ -77,28 +103,32 @@ const char* toString(double value, uint8_t decimal_places) {
         doublePtr++;
     }
 
+    // TODO: Maybe change it to *doublePtr++ or something similar
     *doublePtr = '.';
     doublePtr++;
 
-    double newValue = value - (int)value;
+    double newValue = value - (int)value; // keep only the double portion
     
+    // Add the decimal portion
     for (uint8_t i = 0; i < decimal_places; i++)
     {
-        newValue *= 10;
-        *doublePtr = (int)newValue + '0';
-        newValue -= (int)newValue;
+        newValue *= 10; // promote the largest decimal digit to the units place
+        *doublePtr = (int)newValue + '0'; // put it in the string
+        newValue -= (int)newValue; // remove the int portion
         doublePtr++;
     }
     
 
-    *doublePtr = 0;
+    *doublePtr = 0; // terminate
     return doubleToStringOut;
 }
 
+// By default, we keep only 2 decimal places
 const char* toString(double value) {
     return toString(value, 2);
 }
 
+// TODO: document
 char hexToStringOut64[128];
 const char* toHexString(uint64_t value) {
     uint64_t* valPtr = &value;
