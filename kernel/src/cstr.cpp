@@ -56,14 +56,6 @@ const char* toString(int64_t value) {
         }
     }
 
-    uint8_t index = 0;
-    while (value / 10 > 0) {
-        uint8_t rem = value % 10;
-        value /= 10;
-
-        intToStringOut[size - index + isNeg] = rem + '0';
-        index++;
-    }
     // build the string
     uint8_t index = 0;
     while (value / 10 > 0) {
@@ -139,9 +131,9 @@ const char* toHexString(uint64_t value) {
     {
         ptr = ((uint8_t*)valPtr + i);
         tmp = ((*ptr & 0xF0) >> 4);
-        hexToStringOut64[size - (i * 2 + 1)] = tmp + (tmp > 9 ? 'A' : '0');
+        hexToStringOut64[size - (i * 2 + 1)] = tmp + (tmp > 9 ? 55 : '0');
         tmp = ((*ptr & 0x0F));
-        hexToStringOut64[size - (i * 2)] = tmp + (tmp > 9 ? 'A' : '0');
+        hexToStringOut64[size - (i * 2)] = tmp + (tmp > 9 ? 55 : '0');
     }
     
     hexToStringOut64[size + 1] = 0;
