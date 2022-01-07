@@ -4,7 +4,7 @@ OSNAME = CustomOS
 GNUEFI = ../gnu-efi
 OVMFDIR = ../OVMFbin
 LDS = kernel.ld
-CC = gcc
+CC = gcc -g
 
 CFLAGS = -ffreestanding -fshort-wchar
 LDFLAGS = -T $(LDS) -static -Bsymbolic -nostdlib
@@ -49,3 +49,12 @@ buildimg:
 
 run:
 	qemu-system-x86_64 -drive file=$(BUILDDIR)/$(OSNAME).img -m 256M -cpu qemu64 -drive if=pflash,format=raw,unit=0,file="$(OVMFDIR)/OVMF_CODE-pure-efi.fd",readonly=on -drive if=pflash,format=raw,unit=1,file="$(OVMFDIR)/OVMF_VARS-pure-efi.fd" -net none
+
+debug:
+	qemu-system-x86_64 -drive file=$(BUILDDIR)/$(OSNAME).img \
+	-s -S -m 256M -cpu qemu64 -drive if=pflash,format=raw,unit=0,file="$(OVMFDIR)/OVMF_CODE-pure-efi.fd",readonly=on\
+	 -drive if=pflash,format=raw,unit=1,file="$(OVMFDIR)/OVMF_VARS-pure-efi.fd" -net none &
+	
+	#gdb -ex "add-symbol-file bin/kernel.elf" -ex "target remote :1234" -ex "b _start"
+	
+	
