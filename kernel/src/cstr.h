@@ -14,3 +14,5 @@ const char* toHexString(uint64_t value);
 const char* toHexString(uint32_t value);
 const char* toHexString(uint16_t value);
 const char* toHexString(uint8_t value);
+
+int strlen(const char *str);

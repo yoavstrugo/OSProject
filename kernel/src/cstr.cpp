@@ -1,6 +1,8 @@
 #include "cstr.h"
 
 // TODO: change the toString functions to be more 'moudlar' and 'smartly handeled'
+char strOut[128];
+
 
 char uintToStringOut[128]; // buffer for the string
 const char* toString(uint64_t value) {
@@ -43,11 +45,11 @@ const char* toString(int64_t value) {
     if (value < 0) {
         isNeg = 1;
         value *= -1;
-        intToStringOut[0] = '-';
+        strOut[0] = '-';
     }
 
     // Calculate the size of the string
-    uint8_t size;
+    uint8_t size = 0;
     {
         uint64_t sizeTest = value;
         while (sizeTest / 10 > 0) {
@@ -62,7 +64,7 @@ const char* toString(int64_t value) {
         uint8_t rem = value % 10; // get the digit
         value /= 10; // remove the digit from the number
 
-        uintToStringOut[size - index + isNeg] = rem + '0';  // put the digit in the correct place,
+        strOut[size - index + isNeg] = rem + '0';  // put the digit in the correct place,
                                                             // it starts from the end (the ascii for 
                                                             // number starts at '0'). If the number is
                                                             // negative, we start add 1 to the index.
@@ -72,10 +74,10 @@ const char* toString(int64_t value) {
 
     // Last char and terminate the string
     uint8_t rem = value % 10;
-    intToStringOut[size - index + isNeg] = rem + '0';
-    intToStringOut[size + 1 + isNeg] = 0;
+    strOut[size - index + isNeg] = rem + '0';
+    strOut[size + 1 + isNeg] = 0;
 
-    return intToStringOut;
+    return strOut;
 }
 
 char doubleToStringOut[128];
@@ -195,4 +197,10 @@ const char* toHexString(uint8_t value) {
     
     hexToStringOut32[size + 1] = 0;
     return hexToStringOut32;
+}
+
+int strlen(const char *str) {
+    int count = 0;
+    while (str[count++] != '\0');
+    return --count;
 }
