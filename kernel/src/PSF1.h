@@ -1,4 +1,6 @@
 #pragma once
+#define PSF1_CHAR_WIDTH 8
+
 
 // Represnts the header of PSF1 font
 struct PSF1_HEADER {
